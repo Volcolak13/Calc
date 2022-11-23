@@ -1,5 +1,5 @@
-﻿from PyQt6.QtCore import Qt, QSize
-from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QMainWindow, QHBoxLayout, QVBoxLayout, QLabel, QLineEdit, QLCDNumber
+﻿from PyQt6.QtCore import QSize
+from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QMainWindow, QHBoxLayout, QVBoxLayout, QLCDNumber
 import sys
 
 
@@ -14,7 +14,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         print("MaiinWindow initialization")
-        
+
         self.setFixedSize(QSize(270, 300))
         self.setWindowTitle("Calc")
 
@@ -23,7 +23,6 @@ class MainWindow(QMainWindow):
         btns3 = ["4", "5", "6", "+"]
         btns4 = ["7", "8", "9", "-"]
         btns5 = ["+/-", "0", ".", "="]
-        
 
         # self.label = QLabel()
         # self.input = QLineEdit()
@@ -67,7 +66,7 @@ class MainWindow(QMainWindow):
             button.setFixedSize(QSize(60, 30))
             button.clicked.connect(lambda: self.set_digit(bt))
             layout6.addWidget(button)
-        
+
         for bt in btns5:
             button = QPushButton(bt)
             button.setFixedSize(QSize(60, 30))
@@ -77,9 +76,8 @@ class MainWindow(QMainWindow):
         btt = "111"
         layout8.addWidget(QPushButton(btt))
         button.setFixedSize(QSize(60, 30))
-        button.clicked.connect(lambda: self.set_digit(btt)) 
-        
-        
+        button.clicked.connect(lambda: self.set_digit(btt))
+
         # layout = QVBoxLayout()
         # layout.addWidget(self.input)
         # layout.addWidget(self.label)
@@ -97,11 +95,11 @@ class MainWindow(QMainWindow):
         container = QWidget()
         container.setLayout(layout1)
         self.setCentralWidget(container)
-    
+
     def set_digit(self, value):
         print(value)
         self.LCD.display(value)
-    
+
     def the_button_was_clicked(self):
         # self.button.setText("Done")
         print("clicked")
