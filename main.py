@@ -14,9 +14,8 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
-        print("MaiinWindow initialization")
 
-        self.setFixedSize(QSize(270, 370))
+        self.setFixedSize(QSize(265, 370))
 
     def initUI(self):
         grid = QGridLayout()
@@ -26,7 +25,7 @@ class MainWindow(QWidget):
                  "1", "2", "3", "/",
                  "4", "5", "6", "+",
                  "7", "8", "9", "-",
-                 "+/-", "0", ".", "="]
+                 "+/-", "0", ".", "1"]
 
         positions = [(i, j) for i in range(2, 7) for j in range(4)]
 
@@ -38,6 +37,11 @@ class MainWindow(QWidget):
         self.LCD.setDecMode()
         grid.addWidget(self.LCD, 0, 0, 1, 4)
 
+        # but10 = "TEST"
+        # but1 = QPushButton(but10)
+        # grid.addWidget(but1)
+        # but1.clicked.connect(lambda: self.the_button_was_clicked(but10))
+
         self.buttons = []
 
         for position, name in zip(positions, names):
@@ -45,19 +49,36 @@ class MainWindow(QWidget):
                 continue
             button = Buttn(name)
             button.setFixedSize(QSize(60, 60))
+            button.clicked.connect(lambda: self.the_button_was_clicked(name))
             self.buttons.append(button)
-            button.clicked.connect(lambda name=name: self.
-                                   the_button_was_clicked(name))
             grid.addWidget(button, *position)
+        
+        print(name)
+
+        # for button in self.buttons:
+        #     com = button.name
+        #     print(com)
+
+       # button.clicked.connect(lambda com=button.name: self.the_button_was_clicked("3"))
 
         self.move(1200, 550)
         self.setWindowTitle('Calculator')
         self.show()
 
     def the_button_was_clicked(self, value):
-        print("clicked")
-        self.LCD.display(value)
-        # print(button.name)
+        print("clicked", value)
+        self.logica(value)
+
+    def logica(self, value):
+
+        if self.formula == "0":
+            self.formula = value
+        elif len(self.formula) >= 11:
+            self.formula = "ER"
+            self.formula = "0"
+        else:
+            self.formula += value
+        self.LCD.display(self.formula)
 
 
 app = QApplication(sys.argv)
