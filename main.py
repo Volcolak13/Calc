@@ -52,14 +52,14 @@ class MainWindow(QWidget):
             button.clicked.connect(lambda: self.the_button_was_clicked(name))
             self.buttons.append(button)
             grid.addWidget(button, *position)
-        
+
         print(name)
 
         # for button in self.buttons:
         #     com = button.name
         #     print(com)
 
-       # button.clicked.connect(lambda com=button.name: self.the_button_was_clicked("3"))
+        # button.clicked.connect(lambda com=button.name: self.the_button_was_clicked("3"))
 
         self.move(1200, 550)
         self.setWindowTitle('Calculator')
