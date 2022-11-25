@@ -1,5 +1,6 @@
 ﻿from PyQt6.QtCore import QSize
 from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QLCDNumber, QGridLayout
+from math import sqrt
 import sys
 
 
@@ -15,19 +16,20 @@ class MainWindow(QWidget):
         super().__init__()
         self.initUI()
 
-        self.setFixedSize(QSize(265, 370))
+        self.setFixedSize(265, 435)
 
     def initUI(self):
         grid = QGridLayout()
         self.setLayout(grid)
 
         names = ["C", "DEL", "", "*",
+                 "%", "SQRT", "X^2", "1/X",
                  "1", "2", "3", "/",
                  "4", "5", "6", "+",
                  "7", "8", "9", "-",
                  "+/-", "0", ".", "="]
 
-        positions = [(i, j) for i in range(2, 7) for j in range(4)]
+        positions = [(i, j) for i in range(2, 8) for j in range(4)]
 
         self.LCD = QLCDNumber()
         self.formula = "0"
@@ -56,15 +58,48 @@ class MainWindow(QWidget):
     def the_button_was_clicked(self, value):
         if value == "+/-":
             value = "-"
+        elif value == "%" or value == "SQRT" or value == "X^2" or value == "1/X":
+            value = self.prcs(value)
+            self.formula = "0"
+
         self.logica(value)
+
+    def prcs(self, x):
+        if float(self.formula) > 0:
+            if x == "SQRT":
+                x = str(round(sqrt(float(self.formula)), 5))
+            elif x == "X^2":
+                x = str(round((float(self.formula)**2), 5))
+            elif x == "1/X":
+                x = str(round((1/float(self.formula)), 5))
+        elif float(self.formula) == 0:
+            if x == "SQRT":
+                x = "0"
+            elif x == "X^2":
+                x = "0"
+            elif x == "1/X":
+                x = "ERROR"
+        else:
+            if x == "SQRT":
+                x = "ERROR"
+            elif x == "X^2":
+                x = str(round((float(self.formula)**2), 5))
+            elif x == "1/X":
+                x = str(round((1/float(self.formula)), 5))
+        
+        return x
+        # if self.formula > "0":
+        #     
+        # elif self.formula == "0":
+        #     x = "0"
+        # else:
+        #     x = "ERROR"
+        # return x
 
     def logica(self, value):
 
         if self.formula == "0":
             self.formula = value
-        # elif len(self.formula) >= 11:
-        #     self.formula = "ERROR"
-        #    self.formula = "0"
         elif value == "C":
             self.formula = "0"
         elif value == "DEL":
@@ -72,9 +107,10 @@ class MainWindow(QWidget):
         elif value == "*" or value == "/" or value == "+" or value == "-":
             self.formula += value
         elif value == "=":
-            self.formula = str(round(eval(self.formula), 3))
+            self.formula = str(round(eval(self.formula), 5))
             if len(self.formula) >= 11:
                 self.formula = "ERROR"
+                self.formula = "0"
         else:
             self.formula += value
         self.LCD.display(self.formula)
