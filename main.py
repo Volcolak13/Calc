@@ -25,7 +25,7 @@ class MainWindow(QWidget):
                  "1", "2", "3", "/",
                  "4", "5", "6", "+",
                  "7", "8", "9", "-",
-                 "+/-", "0", ".", "1"]
+                 "+/-", "0", ".", "="]
 
         positions = [(i, j) for i in range(2, 7) for j in range(4)]
 
@@ -44,7 +44,8 @@ class MainWindow(QWidget):
                 continue
             button = Buttn(name)
             button.setFixedSize(QSize(60, 60))
-            button.clicked.connect(lambda: self.the_button_was_clicked(name))
+            button.clicked.connect(lambda ch, name=name:
+                                   self.the_button_was_clicked(name))
             self.buttons.append(button)
             grid.addWidget(button, *position)
 
@@ -53,16 +54,27 @@ class MainWindow(QWidget):
         self.show()
 
     def the_button_was_clicked(self, value):
-        print("clicked", value)
+        if value == "+/-":
+            value = "-"
         self.logica(value)
 
     def logica(self, value):
 
         if self.formula == "0":
             self.formula = value
-        elif len(self.formula) >= 11:
-            self.formula = "ER"
+        # elif len(self.formula) >= 11:
+        #     self.formula = "ERROR"
+        #    self.formula = "0"
+        elif value == "C":
             self.formula = "0"
+        elif value == "DEL":
+            self.formula = str(self.formula[:-1])
+        elif value == "*" or value == "/" or value == "+" or value == "-":
+            self.formula += value
+        elif value == "=":
+            self.formula = str(round(eval(self.formula), 3))
+            if len(self.formula) >= 11:
+                self.formula = "ERROR"
         else:
             self.formula += value
         self.LCD.display(self.formula)
