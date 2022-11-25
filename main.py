@@ -48,8 +48,6 @@ class MainWindow(QWidget):
             self.buttons.append(button)
             grid.addWidget(button, *position)
 
-        print(name)
-
         self.move(1200, 550)
         self.setWindowTitle('Calculator')
         self.show()
