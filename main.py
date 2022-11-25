@@ -37,11 +37,6 @@ class MainWindow(QWidget):
         self.LCD.setDecMode()
         grid.addWidget(self.LCD, 0, 0, 1, 4)
 
-        # but10 = "TEST"
-        # but1 = QPushButton(but10)
-        # grid.addWidget(but1)
-        # but1.clicked.connect(lambda: self.the_button_was_clicked(but10))
-
         self.buttons = []
 
         for position, name in zip(positions, names):
@@ -52,14 +47,8 @@ class MainWindow(QWidget):
             button.clicked.connect(lambda: self.the_button_was_clicked(name))
             self.buttons.append(button)
             grid.addWidget(button, *position)
-        
+
         print(name)
-
-        # for button in self.buttons:
-        #     com = button.name
-        #     print(com)
-
-       # button.clicked.connect(lambda com=button.name: self.the_button_was_clicked("3"))
 
         self.move(1200, 550)
         self.setWindowTitle('Calculator')
