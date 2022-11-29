@@ -22,12 +22,14 @@ class MainWindow(QWidget):
         grid = QGridLayout()
         self.setLayout(grid)
 
-        names = ["C", "DEL", "", "*",
+        names = ["C", "DEL", "", "",
                  "%", "SQRT", "X^2", "1/X",
                  "1", "2", "3", "/",
                  "4", "5", "6", "+",
                  "7", "8", "9", "-",
                  "+/-", "0", ".", "="]
+
+        self.func = ["SQRT", "X^2", "1/X", "+/-"]
 
         positions = [(i, j) for i in range(2, 8) for j in range(4)]
 
@@ -56,60 +58,71 @@ class MainWindow(QWidget):
         self.show()
 
     def the_button_was_clicked(self, value):
-        if value == "+/-":
-            value = "-"
-        elif value == "%" or value == "SQRT" or value == "X^2" or value == "1/X":
-            value = self.prcs(value)
+        if value in self.func:
+            value = self.prcs(value, self.formula)
             self.formula = "0"
-
+        if value == "C":
+            self.formula = "0"
+            value = "0"
+        elif value == "DEL":
+            if self.formula == "0" or self.formula == "DEL" or self.formula == "":
+                value = ""
+            self.formula = str(self.formula[:-1])
+            value = ""
         self.logica(value)
 
-    def prcs(self, x):
-        if float(self.formula) > 0:
+    def prcs(self, x, y):
+        if float(y) > 0:
             if x == "SQRT":
-                x = str(round(sqrt(float(self.formula)), 5))
+                x = str(round(sqrt(float(y)), 5))
             elif x == "X^2":
-                x = str(round((float(self.formula)**2), 5))
+                x = str(round((float(y)**2), 5))
             elif x == "1/X":
-                x = str(round((1/float(self.formula)), 5))
-        elif float(self.formula) == 0:
+                x = str(round((1/float(y)), 5))
+            elif x == "+/-":
+                x = str(float(y)*(-1))
+        elif float(y) == 0 or (y) == "":
+            self.formula = "0"
             if x == "SQRT":
                 x = "0"
             elif x == "X^2":
                 x = "0"
             elif x == "1/X":
-                x = "ERROR"
+                x = "0"
+            elif x == "+/-":
+                x = "0"
         else:
             if x == "SQRT":
-                x = "ERROR"
+                x = "0"
             elif x == "X^2":
-                x = str(round((float(self.formula)**2), 5))
+                x = str(round((float(y)**2), 5))
             elif x == "1/X":
-                x = str(round((1/float(self.formula)), 5))
-        
+                x = str(round((1/float(y)), 5))
+            elif x == "+/-":
+                x = str(float(y)*(-1))
         return x
-        # if self.formula > "0":
-        #     
-        # elif self.formula == "0":
-        #     x = "0"
-        # else:
-        #     x = "ERROR"
-        # return x
+
+    def perc(self, formula):
+        x = formula.split("%")
+        if x[0] == "0" or x[0] == "" or x[1] == "0" or x[1] == "":
+            x = "0"
+        else:
+            x = str(float(x[0])*(float(x[1])/100))
+        return x
 
     def logica(self, value):
 
         if self.formula == "0":
             self.formula = value
-        elif value == "C":
-            self.formula = "0"
-        elif value == "DEL":
-            self.formula = str(self.formula[:-1])
         elif value == "*" or value == "/" or value == "+" or value == "-":
             self.formula += value
         elif value == "=":
+            if "%" in self.formula:
+                self.formula = self.perc(self.formula)
+            elif "=" in self.formula:
+                self.formula = "0"
             self.formula = str(round(eval(self.formula), 5))
             if len(self.formula) >= 11:
-                self.formula = "ERROR"
                 self.formula = "0"
         else:
             self.formula += value
