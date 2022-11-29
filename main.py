@@ -1,5 +1,6 @@
 ﻿from PyQt6.QtCore import QSize
 from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QLCDNumber, QGridLayout
+from PyQt6 import QtGui
 from math import sqrt
 import sys
 
@@ -55,6 +56,7 @@ class MainWindow(QWidget):
 
         self.move(1200, 550)
         self.setWindowTitle('Calculator')
+        self.setWindowIcon(QtGui.QIcon("icon.png"))
         self.show()
 
     def the_button_was_clicked(self, value):
@@ -65,10 +67,12 @@ class MainWindow(QWidget):
             self.formula = "0"
             value = "0"
         elif value == "DEL":
-            if self.formula == "0" or self.formula == "DEL" or self.formula == "":
+            if self.formula == "0" or self.formula == "DEL":
                 value = ""
             self.formula = str(self.formula[:-1])
             value = ""
+            if self.formula == "":
+                value = "0"
         self.logica(value)
 
     def prcs(self, x, y):
@@ -115,7 +119,10 @@ class MainWindow(QWidget):
         if self.formula == "0":
             self.formula = value
         elif value == "*" or value == "/" or value == "+" or value == "-":
-            self.formula += value
+            if self.formula == "":
+                self.formula = "0"
+            else:
+                self.formula += value
         elif value == "=":
             if "%" in self.formula:
                 self.formula = self.perc(self.formula)
