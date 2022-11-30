@@ -1,1 +1,4 @@
 ﻿main.spec
+build
+dist
+.vscode
