@@ -20,6 +20,7 @@ class MainWindow(QWidget):
         self.setFixedSize(265, 435)
 
     def initUI(self):
+        """User Interface initialization."""
         grid = QGridLayout()
         self.setLayout(grid)
 
@@ -61,6 +62,7 @@ class MainWindow(QWidget):
         self.show()
 
     def the_button_was_clicked(self, value):
+        """Button action processor."""
         if value in self.func:
             value = self.prcs(value, self.formula)
             self.formula = "0"
@@ -83,6 +85,7 @@ class MainWindow(QWidget):
         self.logica(value)
 
     def prcs(self, x, y):
+        """Function processor."""
         if float(y) > 0:
             if x == "SQRT":
                 x = str(round(sqrt(float(y)), 5))
@@ -114,6 +117,7 @@ class MainWindow(QWidget):
         return x
 
     def perc(self, formula):
+        """Persenc function processor."""
         x = formula.split("%")
         if x[0] == "0" or x[0] == "" or x[1] == "0" or x[1] == "":
             x = "0"
@@ -122,6 +126,7 @@ class MainWindow(QWidget):
         return x
 
     def logica(self, value):
+        """Main logic."""
 
         if self.formula == "0":
             self.formula = value
