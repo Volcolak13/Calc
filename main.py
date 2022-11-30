@@ -23,7 +23,7 @@ class MainWindow(QWidget):
         grid = QGridLayout()
         self.setLayout(grid)
 
-        names = ["C", "DEL", "", "",
+        names = ["C", "DEL", "MR+", "MR",
                  "%", "SQRT", "X^2", "1/X",
                  "1", "2", "3", "/",
                  "4", "5", "6", "+",
@@ -36,6 +36,7 @@ class MainWindow(QWidget):
 
         self.LCD = QLCDNumber()
         self.formula = "0"
+        self.mr = "0"
         self.LCD.display(self.formula)
         self.LCD.setFixedHeight(40)
         self.LCD.setDigitCount(12)
@@ -73,6 +74,12 @@ class MainWindow(QWidget):
             value = ""
             if self.formula == "":
                 value = "0"
+        elif value == "MR+":
+            value = ""
+            self.mr = self.formula
+        elif value == "MR":
+            value = self.mr
+
         self.logica(value)
 
     def prcs(self, x, y):
